@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.1" NoWarn="NU1605" />
+	  
+	  <PackageReference Include="NSwag.AspNetCore" Version="13.13.2" />
+	  <PackageReference Include="NSwag.CodeGeneration.TypeScript" Version="13.13.2" />
+	  <PackageReference Include="NSwag.MSBuild" Version="13.13.2">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+  </ItemGroup>
+	
+	<Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
+		<Message Importance="High" Text="$(NSwagExe_Net50) run config.nswag /variables:Configuration=$(Configuration)" />
+
+		<Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net50) run config.nswag /variables:Configuration=$(Configuration)" />
+
+		<Delete Files="$(ProjectDir)\obj\$(MSBuildProjectFile).NSwag.targets" />
+		<!-- This thingy trigger project rebuild -->
+	</Target>
+</Project>
