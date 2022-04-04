@@ -12,15 +12,15 @@ module.exports = {
 		ecmaVersion: 2020,
 	},
 	rules: {
-		"no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-		"no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-		"indent": ["error", "tab"],
-		"vue/script-indent": ["error", "tab", { "baseIndent": 1 }],
-		"vue/html-indent": ["error", "tab", { "baseIndent": 1 }],
-		"vue/component-name-in-template-casing": ["error", "PascalCase", {
-			"registeredComponentsOnly": false,
-			"ignores": []
-		}]
+		// "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+		// "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+		// "indent": ["error", "tab"],
+		// "vue/script-indent": ["error", "tab", { "baseIndent": 1 }],
+		// "vue/html-indent": ["error", "tab", { "baseIndent": 1 }],
+		// "vue/component-name-in-template-casing": ["error", "PascalCase", {
+		// 	"registeredComponentsOnly": false,
+		// 	"ignores": []
+		// }]
 	},
 	overrides: [
 		{

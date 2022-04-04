@@ -1,16 +1,21 @@
 <template>
-	<ACarousel arrows>
-		<template #prevArrow>
-			<div class="custom-slick-arrow" style="left: 10px; z-index: 1">
-				<LeftCircleOutlined />
-			</div>
-		</template>
-		<template #nextArrow>
-			<div class="custom-slick-arrow" style="right: 10px">
-				<RightCircleOutlined />
-			</div>
-		</template>
-	</ACarousel>
+	<!--	<ACarousel arrows>-->
+	<!--		<template #prevArrow>-->
+	<!--			<div class="custom-slick-arrow" style="left: 10px; z-index: 1">-->
+	<!--				<LeftCircleOutlined />-->
+	<!--			</div>-->
+	<!--		</template>-->
+	<!--		<template #nextArrow>-->
+	<!--			<div class="custom-slick-arrow" style="right: 10px">-->
+	<!--				<RightCircleOutlined />-->
+	<!--			</div>-->
+	<!--		</template>-->
+	<!--	</ACarousel>-->
+
+	<VFileInput
+		multiple
+		label="File input"
+	></VFileInput>
 </template>
 
 <script lang="ts" src="./homeView.ts"></script>
