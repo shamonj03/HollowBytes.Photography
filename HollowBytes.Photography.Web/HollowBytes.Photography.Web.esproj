@@ -14,6 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="client-app\src\components\" />
+    <Folder Include="client-app\src\views\about\" />
     <Folder Include="client-app\tests\unit\" />
   </ItemGroup>
   <!-- This target is copied from the ASP.NET SPA template in order to ensure node_modules are in place. -->

@@ -7,11 +7,11 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-export interface IWeatherForecastClient {
-    get(): Promise<WeatherForecast[]>;
+export interface IImagesClient {
+    upload(request: UploadImageRequest): Promise<void>;
 }
 
-export class WeatherForecastClient implements IWeatherForecastClient {
+export class ImagesClient implements IImagesClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -21,55 +21,45 @@ export class WeatherForecastClient implements IWeatherForecastClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    get(): Promise<WeatherForecast[]> {
-        let url_ = this.baseUrl + "/WeatherForecast";
+    upload(request: UploadImageRequest): Promise<void> {
+        let url_ = this.baseUrl + "/Images";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(request);
+
         let options_ = <RequestInit>{
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
-                "Accept": "application/json"
+                "Content-Type": "application/json",
             }
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGet(_response);
+            return this.processUpload(_response);
         });
     }
 
-    protected processGet(response: Response): Promise<WeatherForecast[]> {
+    protected processUpload(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(WeatherForecast.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return result200;
+            return;
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<WeatherForecast[]>(<any>null);
+        return Promise.resolve<void>(<any>null);
     }
 }
 
-export class WeatherForecast implements IWeatherForecast {
-    date!: Date;
-    temperatureC!: number;
-    temperatureF!: number;
-    summary?: string | undefined;
+export class UploadImageRequest implements IUploadImageRequest {
+    files?: any[] | undefined;
 
-    constructor(data?: IWeatherForecast) {
+    constructor(data?: IUploadImageRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -80,35 +70,34 @@ export class WeatherForecast implements IWeatherForecast {
 
     init(_data?: any) {
         if (_data) {
-            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
-            this.temperatureC = _data["temperatureC"];
-            this.temperatureF = _data["temperatureF"];
-            this.summary = _data["summary"];
+            if (Array.isArray(_data["files"])) {
+                this.files = [] as any;
+                for (let item of _data["files"])
+                    this.files!.push(item);
+            }
         }
     }
 
-    static fromJS(data: any): WeatherForecast {
+    static fromJS(data: any): UploadImageRequest {
         data = typeof data === 'object' ? data : {};
-        let result = new WeatherForecast();
+        let result = new UploadImageRequest();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
-        data["temperatureC"] = this.temperatureC;
-        data["temperatureF"] = this.temperatureF;
-        data["summary"] = this.summary;
+        if (Array.isArray(this.files)) {
+            data["files"] = [];
+            for (let item of this.files)
+                data["files"].push(item);
+        }
         return data; 
     }
 }
 
-export interface IWeatherForecast {
-    date: Date;
-    temperatureC: number;
-    temperatureF: number;
-    summary?: string | undefined;
+export interface IUploadImageRequest {
+    files?: any[] | undefined;
 }
 
 export class ApiException extends Error {
