@@ -1,3 +1,7 @@
+using HollowBytes.Photography.Application;
+using HollowBytes.Photography.Persistence.Implementations;
+using HollowBytes.Photography.Persistence.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +32,10 @@ namespace DemoProject.Api
                         .AllowAnyHeader();
                 });
             });
+
+            services.AddMediatR(typeof(ApplicationMarker));
+            services.Configure<IMongoDbConfiguration>(Configuration.GetSection("Database"));
+            services.AddSingleton<IMongoDbContext, MongoDbContext>();
 
             services.AddControllers();
             services.AddSwaggerDocument();
