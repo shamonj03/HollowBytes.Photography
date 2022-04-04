@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HollowBytes.Photography.Api
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "HollowBytes.Photography.Web", "HollowBytes.Photography.Web\HollowBytes.Photography.Web.esproj", "{FEA75D5B-E604-4F27-9FDB-6B44C3311F0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HollowBytes.Photography.Persistence", "HollowBytes.Photography.Persistence\HollowBytes.Photography.Persistence.csproj", "{66A111AA-4039-434A-833E-A256C0A5E53D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HollowBytes.Photography.Application", "HollowBytes.Photography.Application\HollowBytes.Photography.Application.csproj", "{838B6C68-9CDC-497A-B5FD-1683F1378545}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,14 @@ Global
 		{FEA75D5B-E604-4F27-9FDB-6B44C3311F0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEA75D5B-E604-4F27-9FDB-6B44C3311F0D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FEA75D5B-E604-4F27-9FDB-6B44C3311F0D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{66A111AA-4039-434A-833E-A256C0A5E53D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66A111AA-4039-434A-833E-A256C0A5E53D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66A111AA-4039-434A-833E-A256C0A5E53D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66A111AA-4039-434A-833E-A256C0A5E53D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{838B6C68-9CDC-497A-B5FD-1683F1378545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{838B6C68-9CDC-497A-B5FD-1683F1378545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{838B6C68-9CDC-497A-B5FD-1683F1378545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{838B6C68-9CDC-497A-B5FD-1683F1378545}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
