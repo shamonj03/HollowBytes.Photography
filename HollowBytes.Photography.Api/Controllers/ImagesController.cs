@@ -1,8 +1,9 @@
-﻿using HollowBytes.Photography.Application.Messages;
+﻿using HollowBytes.Photography.Application.Models;
+using HollowBytes.Photography.Application.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
-using System.Net;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HollowBytes.Photography.Api.Controllers
@@ -19,12 +20,25 @@ namespace HollowBytes.Photography.Api.Controllers
         }
 
         [HttpPost]
-        [Consumes("multipart/form-data")]
         [SwaggerResponse(typeof(void))]
-        public async Task<IActionResult> Upload(UploadImageRequest request)
+        public async Task<IActionResult> Upload([FromForm] UploadImageRequest request)
         {
             await _mediator.Send(request);
             return Ok();
+        }
+
+        [HttpGet("{filename}")]
+        [SwaggerResponse(typeof(byte[]))]
+        public async Task<IActionResult> GetImage([FromRoute] GetImageRequest request)
+        {
+            return Ok(await _mediator.Send(request));
+        }
+
+        [HttpGet]
+        [SwaggerResponse(typeof(IEnumerable<ImageInfoDto>))]
+        public async Task<IActionResult> GetImages(GetAllImageInfoRequest request)
+        {
+            return Ok(await _mediator.Send(request));
         }
     }
 }

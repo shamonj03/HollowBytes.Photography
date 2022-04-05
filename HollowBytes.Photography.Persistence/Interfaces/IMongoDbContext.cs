@@ -1,9 +1,9 @@
-﻿using MongoDB.Driver.GridFS;
+﻿using MongoDB.Driver;
 
 namespace HollowBytes.Photography.Persistence.Interfaces
 {
     public interface IMongoDbContext
     {
-        GridFSBucket ImagesBucket { get; }
+        IMongoDatabase Database { get; }
     }
 }
