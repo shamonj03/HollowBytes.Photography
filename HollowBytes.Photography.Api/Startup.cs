@@ -1,6 +1,8 @@
 using HollowBytes.Photography.Application;
+using HollowBytes.Photography.Persistence.Configuration;
 using HollowBytes.Photography.Persistence.Implementations;
-using HollowBytes.Photography.Persistence.Interfaces;
+using HollowBytes.Photography.Persistence.Implementations.Repositories;
+using HollowBytes.Photography.Persistence.Interfaces.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,8 +36,9 @@ namespace DemoProject.Api
             });
 
             services.AddMediatR(typeof(ApplicationMarker));
-            services.Configure<IMongoDbConfiguration>(Configuration.GetSection("Database"));
-            services.AddSingleton<IMongoDbContext, MongoDbContext>();
+            services.Configure<PhotographyDbConfiguration>(Configuration.GetSection("Database"));
+            services.AddSingleton<PhotographyDbContext>();
+            services.AddTransient<IImagesRepository, ImagesRepository>();
 
             services.AddControllers();
             services.AddSwaggerDocument();

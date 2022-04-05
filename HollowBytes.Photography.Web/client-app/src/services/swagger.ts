@@ -8,7 +8,9 @@
 // ReSharper disable InconsistentNaming
 
 export interface IImagesClient {
-    upload(request: UploadImageRequest): Promise<void>;
+    upload(files?: FileParameter[] | null | undefined): Promise<void>;
+    getImages(request: GetAllImageInfoRequest): Promise<ImageInfoDto[]>;
+    getImage(filename: string | null): Promise<string>;
 }
 
 export class ImagesClient implements IImagesClient {
@@ -21,17 +23,18 @@ export class ImagesClient implements IImagesClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    upload(request: UploadImageRequest): Promise<void> {
+    upload(files?: FileParameter[] | null | undefined): Promise<void> {
         let url_ = this.baseUrl + "/Images";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(request);
+        const content_ = new FormData();
+        if (files !== null && files !== undefined)
+            files.forEach(item_ => content_.append("Files", item_.data, item_.fileName ? item_.fileName : "Files") );
 
         let options_ = <RequestInit>{
             body: content_,
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
             }
         };
 
@@ -54,12 +57,94 @@ export class ImagesClient implements IImagesClient {
         }
         return Promise.resolve<void>(<any>null);
     }
+
+    getImages(request: GetAllImageInfoRequest): Promise<ImageInfoDto[]> {
+        let url_ = this.baseUrl + "/Images";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetImages(_response);
+        });
+    }
+
+    protected processGetImages(response: Response): Promise<ImageInfoDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ImageInfoDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ImageInfoDto[]>(<any>null);
+    }
+
+    getImage(filename: string | null): Promise<string> {
+        let url_ = this.baseUrl + "/Images/{filename}";
+        if (filename === undefined || filename === null)
+            throw new Error("The parameter 'filename' must be defined.");
+        url_ = url_.replace("{Filename}", encodeURIComponent("" + filename));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetImage(_response);
+        });
+    }
+
+    protected processGetImage(response: Response): Promise<string> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string>(<any>null);
+    }
 }
 
-export class UploadImageRequest implements IUploadImageRequest {
-    files?: any[] | undefined;
+export class ImageInfoDto implements IImageInfoDto {
+    filename?: string | undefined;
 
-    constructor(data?: IUploadImageRequest) {
+    constructor(data?: IImageInfoDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -70,34 +155,61 @@ export class UploadImageRequest implements IUploadImageRequest {
 
     init(_data?: any) {
         if (_data) {
-            if (Array.isArray(_data["files"])) {
-                this.files = [] as any;
-                for (let item of _data["files"])
-                    this.files!.push(item);
-            }
+            this.filename = _data["filename"];
         }
     }
 
-    static fromJS(data: any): UploadImageRequest {
+    static fromJS(data: any): ImageInfoDto {
         data = typeof data === 'object' ? data : {};
-        let result = new UploadImageRequest();
+        let result = new ImageInfoDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.files)) {
-            data["files"] = [];
-            for (let item of this.files)
-                data["files"].push(item);
-        }
+        data["filename"] = this.filename;
         return data; 
     }
 }
 
-export interface IUploadImageRequest {
-    files?: any[] | undefined;
+export interface IImageInfoDto {
+    filename?: string | undefined;
+}
+
+export class GetAllImageInfoRequest implements IGetAllImageInfoRequest {
+
+    constructor(data?: IGetAllImageInfoRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): GetAllImageInfoRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllImageInfoRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export interface IGetAllImageInfoRequest {
+}
+
+export interface FileParameter {
+    data: any;
+    fileName: string;
 }
 
 export class ApiException extends Error {
