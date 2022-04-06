@@ -1,8 +1,8 @@
-﻿using HollowBytes.Photography.Application.Models;
+﻿using HollowBytes.Photography.Application.Images.Models;
 using MediatR;
 using System.Collections.Generic;
 
-namespace HollowBytes.Photography.Application.Requests
+namespace HollowBytes.Photography.Application.Images.Requests
 {
     public class GetAllImageInfoRequest : IRequest<IEnumerable<ImageInfoDto>>
     {

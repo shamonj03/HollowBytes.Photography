@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
-namespace HollowBytes.Photography.Application.Requests
+namespace HollowBytes.Photography.Application.Images.Requests
 {
     public class UploadImageRequest : IRequest
     {

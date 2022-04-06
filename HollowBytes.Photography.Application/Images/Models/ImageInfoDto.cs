@@ -1,4 +1,4 @@
-﻿namespace HollowBytes.Photography.Application.Models
+﻿namespace HollowBytes.Photography.Application.Images.Models
 {
     public class ImageInfoDto
     {

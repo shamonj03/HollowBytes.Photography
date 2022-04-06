@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace HollowBytes.Photography.Application.Requests
+namespace HollowBytes.Photography.Application.Images.Requests
 {
     public class GetImageRequest : IRequest<byte[]>
     {
