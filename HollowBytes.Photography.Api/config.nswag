@@ -122,7 +122,7 @@
       "checksumCacheEnabled": false,
       "serviceHost": null,
       "serviceSchemes": [],
-      "output": "../HollowBytes.Photography.Web/client-app/src/services/swagger.ts",
+      "output": "../HollowBytes.Photography.Web/src/services/swagger.ts",
       "newLineBehavior": "Auto"
     }
   }
