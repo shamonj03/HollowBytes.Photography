@@ -1,5 +1,5 @@
-﻿using HollowBytes.Photography.Application.Models;
-using HollowBytes.Photography.Application.Requests;
+﻿using HollowBytes.Photography.Application.Images.Models;
+using HollowBytes.Photography.Application.Images.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
